@@ -1,0 +1,23 @@
+{
+  "name": "melody-generator-backend",
+  "version": "1.0.0",
+  "description": "backend for the melody generator project",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test",
+    "start": " start"
+  },
+  "author": "Joe Larayedh",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.0.3",
+    "save": "^2.9.0",
+    "stripe": "^11.16.0",
+    "uuid": "^9.0.0"
+  }
+}
