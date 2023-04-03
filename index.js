@@ -8,8 +8,8 @@ const cookieParser = require("cookie-parser");
 const Melody = require('./models/melody');
 
 const app = express();
-app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
-
+//app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+app.use(cors({credentials: true, origin: 'https://melody-generator-backend.vercel.app/'}));
 const port = process.env.PORT || 4033;
 
 const authenticationRouter = require('./routes/AuthenticationController');
