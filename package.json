@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run test",
-    "start": " start"
+    "start": " node index.js"
+  },
+  "engines": {
+    "node": "14.x"
   },
   "author": "Joe Larayedh",
   "license": "ISC",
