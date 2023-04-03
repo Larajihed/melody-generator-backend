@@ -1,16 +1,20 @@
 const stripe = require("stripe")("sk_test_51CkpKnAShxTdv5i7NOFC5GsMZWzXrjxGWClX0J6cOu9gfMRrISHDLK7GvlXrDIoVpJzUJNaRIVO9vbwjamhNKeQm00IsXRK1L5")
-
-
 const router = require('express').Router();
-
+const {User, Payment} = require('../models/user'); // Import the User model here
+const verifyToken = require('../middleware/AuthenticateToken');
+const jwt = require('jsonwebtoken');
 
 router.post('/subscribe', async (req, res) => {
-    createSubscription(req);
+  try {
+    await createSubscription(req);
+    res.status(200).send('Subscription successful');
+  } catch (error) {
+    res.status(500).send('Error processing subscription');
+  }
+});
 
-  });
-
-  async function createSubscription(createSubscriptionRequest) {
-  
+async function createSubscription(createSubscriptionRequest) {
+  try {
     // create a stripe customer
     const customer = await stripe.customers.create({
       name: createSubscriptionRequest.body.name,
@@ -20,35 +24,116 @@ router.post('/subscribe', async (req, res) => {
         default_payment_method: createSubscriptionRequest.body.paymentMethod,
       },
     });
-    console.log("customer" , customer)
-
 
     // get the price id from the front-end
-    const priceId = createSubscriptionRequest.body.priceId;
+    const priceId = createSubscriptionRequest.body.premiumPriceId;
 
     // create a stripe subscription
     const subscription = await stripe.subscriptions.create({
       customer: customer.id,
       items: [{ price: priceId }],
       payment_settings: {
-        payment_method_options: {
-          card: {
-            request_three_d_secure: 'any',
-          },
-        },
-        payment_method_types: ['card'],
-        save_default_payment_method: 'on_subscription',
+        payment_method_types: ["card"],
+        save_default_payment_method: "on_subscription",
       },
       expand: ['latest_invoice.payment_intent'],
     });
-console.log("subscription", subscription)
-    // return the client secret and subscription id
+
+    // check if the user has previously canceled their subscription and is now resuming it
+    const user = await User.findByEmail(createSubscriptionRequest.body.currentUserEmail);
+    if (user && user.subscriptionExpiration < new Date()) {
+      user.subscriptionExpiration = null;
+      await user.save();
+    }
+
+    // create a payment object and save it to the database
+    const payment = new Payment({
+      amount: 9.99, // change this to the actual amount paid
+      date: new Date(),
+      subscriptionId: subscription.id,
+      currency: subscription.currency,
+      customer: subscription.customer,
+      defaultPaymentMethod: subscription.default_payment_method,
+      latest_invoice: subscription.latest_invoice.id,
+      accountCountry: subscription.latest_invoice.account_Country,
+      customerName: subscription.latest_invoice.customer_name,
+      customerEmail: subscription.latest_invoice.customer_email,
+      hosted_invoice_url: subscription.latest_invoice.hosted_invoice_url,
+    });
+    await payment.save();
+
+    // update the user's premium status and previous payments array
+    if (user) {
+      user.premium = true;
+      user.generations = 1000;
+      user.previousPayments.push(payment._id);
+      await user.save();
+    }
+
     return {
       clientSecret: subscription.latest_invoice.payment_intent.client_secret,
       subscriptionId: subscription.id,
     };
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
-  
+}
 
 
-  module.exports =router;
+router.get('/payments', async (req, res) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).send({ message: 'Unauthorized' });
+  }
+  try {
+    const claims = jwt.verify(token, process.env.JWT_SECRET);
+    if (!claims) {
+      return res.status(401).send({ message: 'Invalid token' });
+    }
+    // Find user based on email in JWT claims
+    const user = await User.findOne({ email: claims.email });
+    if (!user) {
+      return res.status(401).send({ message: 'User not found' });
+    }
+    const payments = await Payment.find({ _id: { $in: user.previousPayments } });
+
+    res.json(payments);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: 'Internal server error' });
+  }
+});
+
+router.post('/cancel', async(req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.user.email }).populate('previousPayments').exec();    
+    const lastPayment = user.previousPayments[user.previousPayments.length - 1];
+    const payment = await Payment.findById(lastPayment); 
+    
+  const subscription = await stripe.subscriptions.del(payment.subscriptionId);
+   var currentperiodenddateFormat = new Date(subscription.current_period_end*1000);
+    console.log(currentperiodenddateFormat)
+    
+
+    if (user) {
+      user.premium = true;
+      user.generations = 1000;
+      user.subscriptionExpiration =currentperiodenddateFormat ;
+      await user.save()
+    }
+    
+    res.send({
+      message: 'Subscription cancelled successfully'
+    });
+
+  } catch(err){
+    console.log(err)
+    res.status(500).send({
+      message: 'Failed to cancel subscription'
+    });
+  }
+});
+
+module.exports = router;
