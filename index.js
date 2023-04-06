@@ -9,7 +9,7 @@ const Melody = require('./models/melody');
 
 const app = express();
 //app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
-app.use(cors({credentials: true, origin: '*'}));
+app.use(cors({credentials: true, origin: 'https://https://dev.dj19csamz5x4m.amplifyapp.com'}));
 
 const port = process.env.PORT || 4033;
 
