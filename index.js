@@ -13,6 +13,14 @@ const corsOptions = {
   origin: 'https://melody-generator-front-orcin.vercel.app',
   credentials: true
 }
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', 'https://melody-generator-front-orcin.vercel.app');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+});
+
+
 app.use(cors(corsOptions));
 const port = process.env.PORT || 4033;
 
