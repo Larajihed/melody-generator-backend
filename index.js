@@ -9,12 +9,7 @@ const Melody = require('./models/melody');
 
 const app = express();
 //app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
-
-app.use(cors({
-  origin: '*',
-  credentials: true
-}
-));
+app.use(cors({credentials: true, origin: '*'}));
 
 const port = process.env.PORT || 4033;
 
