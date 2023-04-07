@@ -66,7 +66,7 @@ router.post('/register', async (req, res) => {
     })
 });
 
-router.post('/getcurrentuser', async (req, res) => {
+router.get('/getcurrentuser', async (req, res) => {
   try {
 
       const cookie = req.cookies['token']
