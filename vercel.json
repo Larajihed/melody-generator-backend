@@ -1,16 +1,21 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "./index.js",
-        "use": "@vercel/node"
-      }
-    ],
-    "routes": [
-      
-      {
-        "src": "/(.*)",
-        "dest": "/"
-      }
-    ]
+  "version": 2,
+  "builds": [
+    {
+      "src": "./index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ],
+  "functions": {
+    "utils/resetGenerations.js": {
+      "runtime": "nodejs16.x",
+      "schedule": "0 0 * * *"
+    }
   }
+}
