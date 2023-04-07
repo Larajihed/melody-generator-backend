@@ -9,7 +9,7 @@ const Melody = require('./models/melody');
 
 const app = express();
 //app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
-app.use(cors({credentials: true, origin: 'https://melody-generator-front-orcin.vercel.app/'}));
+app.use(cors({credentials: true, origin: 'https://melody-generator-front-orcin.vercel.app'}));
 
 const port = process.env.PORT || 4033;
 
