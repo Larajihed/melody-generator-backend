@@ -68,24 +68,25 @@ router.post('/register', async (req, res) => {
 
 router.get('/getcurrentuser', async (req, res) => {
   try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).send({ message: 'unauthenticated' });
+    }
 
-      const cookie = req.cookies['token']
-      const claims = jwt.verify(cookie, process.env.JWT_SECRET)
-      if (!claims) {
-          return res.status(401).send({
-              message: 'unauthenticated claims'
-          })
-      }
+    const token = authHeader.split(' ')[1];
+    const claims = jwt.verify(token, process.env.JWT_SECRET);
 
-      const user = await User.findOne({email: claims.email})
-      const {password, ...data} = await user.toJSON()
-      res.send(data)
+    if (!claims) {
+      return res.status(401).send({ message: 'unauthenticated claims' });
+    }
+
+    const user = await User.findOne({ email: claims.email });
+    const { password, ...data } = await user.toJSON();
+    res.send(data);
   } catch (e) {
-      return res.status(401).send({
-          message: 'unauthenticated'
-      })
+    return res.status(401).send({ message: 'unauthenticated' });
   }
-})
+});
 
 router.post('/logout', (req, res) => {
   
