@@ -8,11 +8,12 @@
     "start": " node index.js"
   },
   "engines": {
-    "node": "14.x"
+    "node": "18.x"
   },
   "author": "Joe Larayedh",
   "license": "ISC",
   "dependencies": {
+    "@vercel/integration-utils": "^0.6.5-canary.0",
     "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

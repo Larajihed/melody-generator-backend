@@ -13,9 +13,17 @@
     }
   ],
   "functions": {
-    "utils/resetGenerations.js": {
-      "runtime": "nodejs16.x",
-      "schedule": "0 0 * * *"
+    "api/resetGenerations.js": {
+      "runtime": "nodejs16.x"
     }
+  },
+  "integration": {
+    "middleware": "./vercel.integration.js",
+    "scheduling": [
+      {
+        "name": "resetGenerations",
+        "cron": "0 0 * * *"
+      }
+    ]
   }
 }
