@@ -41,7 +41,7 @@ router.post('/register', async (req, res) => {
         })
     }
 
-    if (!await bcrypt.compare(req.body.userPassword, user.password)) {
+    if (!await bcrypt.compare(req.body.userPassword, user.password  )) {
         return res.status(400).send({
             message: 'invalid credentials'
         })
