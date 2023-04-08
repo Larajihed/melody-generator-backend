@@ -80,24 +80,11 @@ async function createSubscription(createSubscriptionRequest) {
 
 
 router.get('/payments', async (req, res) => {
-  const token = req.cookies.token;
-  if (!token) {
-    return res.status(401).send({ message: 'Unauthorized' });
-  }
+  
   try {
-    const claims = jwt.verify(token, process.env.JWT_SECRET);
-    if (!claims) {
-      return res.status(401).send({ message: 'Invalid token' });
-    }
-    // Find user based on email in JWT claims
-    const user = await User.findOne({ email: claims.email });
-    if (!user) {
-      return res.status(401).send({ message: 'User not found' });
-    }
+    const user = await User.findOne({ email: req.user.email });
     const payments = await Payment.find({ _id: { $in: user.previousPayments } });
-
     res.json(payments);
-
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: 'Internal server error' });
