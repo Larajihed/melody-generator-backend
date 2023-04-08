@@ -11,9 +11,45 @@ require('dotenv').config();
 
 const url ='https://api.openai.com/v1/engines/text-davinci-003/completions';
 router.post('/new', verifyToken, async (req, res) => {
-  const prompt = req.body.emotion ? 
-  `Create a melody in the style of ${req.body.artist} that evokes the emotion of ${req.body.emotion}. Please provide the key, tempo, and instructions for each part of the melody.` :
-  `Create a melody in the style of ${req.body.artist}. Please provide the key, tempo, and instructions for each part of the melody.`;
+  const prompt = req.body.emotion ?
+  `Write a unique ${req.body.emotion} melody outline for a beat inspired by ${req.body.artist} for me with the following specifications. Limit expendable prose:
+Key:
+Tempo:
+Chord progression - (Instrument)
+Chords:
+Notes for Chord 1:
+Notes for Chord 2:
+Notes for Chord 3:
+Notes for Chord 4:
+Lead melody - (Instrument)
+Notes for Bar 1:
+Notes for Bar 2:
+Notes for Bar 3:
+Notes for Bar 4:
+Counter melody - (Instrument)
+Notes for Bar 1:
+Notes for Bar 2:
+Notes for Bar 3:
+Notes for Bar 4:` :
+  `Write a unique melody outline for a beat inspired by ${req.body.artist} for me with the following specifications. Limit expendable prose:
+Key:
+Tempo:
+Chord progression - (Instrument)
+Chords:
+Notes for Chord 1:
+Notes for Chord 2:
+Notes for Chord 3:
+Notes for Chord 4:
+Lead melody - (Instrument)
+Notes for Bar 1:
+Notes for Bar 2:
+Notes for Bar 3:
+Notes for Bar 4:
+Counter melody - (Instrument)
+Notes for Bar 1:
+Notes for Bar 2:
+Notes for Bar 3:
+Notes for Bar 4:`;
 
   const headers = new Headers({
   'Content-Type': 'application/json',
