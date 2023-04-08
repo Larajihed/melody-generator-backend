@@ -14,13 +14,6 @@ router.post('/new', verifyToken, async (req, res) => {
   const prompt = req.body.emotion ? 
   `Create a melody in the style of ${req.body.artist} that evokes the emotion of ${req.body.emotion}. Please provide the key, tempo, and instructions for each part of the melody.` :
   `Create a melody in the style of ${req.body.artist}. Please provide the key, tempo, and instructions for each part of the melody.`;
-/*
-  const prompt = req.body.emotion ? 
-  `Create a melody in the style of ${req.body.artist} that evokes the emotion of ${req.body.emotion}. Please provide the key, tempo, and instructions for each part of the melody in the following JSON format {   
-    "Key":"Key", "Tempo": "Tempo", "Part X":{"Instrument": "Instrument Used ","Notes": [],"Techniques": []} Please make sure to include "Part X" for each section, where X is the number of the part.` :
-  `Create a melody in the style of ${req.body.artist}. Please provide the key, tempo, and instructions for each part of the melody in the following JSON format {   
-    "Key":"Key", "Tempo": "Tempo", "Part X":{"Instrument": "Instrument Used ","Notes": [],"Techniques": []} Please make sure to include "Part X" for each section, where X is the number of the part.`;
-*/
 
   const headers = new Headers({
   'Content-Type': 'application/json',
