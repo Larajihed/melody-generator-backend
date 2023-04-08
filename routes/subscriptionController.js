@@ -1,8 +1,6 @@
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
 const router = require('express').Router();
-const {User, Payment} = require('../models/user'); // Import the User model here
-const verifyToken = require('../middleware/AuthenticateToken');
-const jwt = require('jsonwebtoken');
+const {User, Payment} = require('../models/user'); 
 
 router.post('/subscribe', async (req, res) => {
   try {
@@ -86,22 +84,19 @@ router.get('/payments', async (req, res) => {
     const payments = await Payment.find({ _id: { $in: user.previousPayments } });
     res.json(payments);
   } catch (err) {
-    console.error(err);
     res.status(500).send({ message: 'Internal server error' });
   }
 });
+
+
 
 router.post('/cancel', async(req, res) => {
   try {
     const user = await User.findOne({ email: req.body.user.email }).populate('previousPayments').exec();    
     const lastPayment = user.previousPayments[user.previousPayments.length - 1];
     const payment = await Payment.findById(lastPayment); 
-    
-  const subscription = await stripe.subscriptions.del(payment.subscriptionId);
-   var currentperiodenddateFormat = new Date(subscription.current_period_end*1000);
-    console.log(currentperiodenddateFormat)
-    
-
+    const subscription = await stripe.subscriptions.del(payment.subscriptionId);
+    const currentperiodenddateFormat = new Date(subscription.current_period_end*1000);    
     if (user) {
       user.premium = true;
       user.generations = 1000;
