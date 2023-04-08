@@ -7,6 +7,7 @@ const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const Melody = require('./models/melody');
  require('./api/resetGenerations');
+ const { User } = require('../models/user');
 
 
 const app = express();
