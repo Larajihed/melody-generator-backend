@@ -12,18 +12,10 @@
       "dest": "/"
     }
   ],
-  "functions": {
-    "api/resetGenerations.js": {
-      "runtime": "nodejs16.x"
+  "crons": [
+    {
+      "path": "/utils/resetGenerations.js",
+      "schedule": "*/10 * * * *"
     }
-  },
-  "integration": {
-    "middleware": "./vercel.integration.js",
-    "scheduling": [
-      {
-        "name": "resetGenerations",
-        "cron": "0 0 * * *"
-      }
-    ]
-  }
+  ]
 }
