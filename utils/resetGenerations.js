@@ -1,12 +1,13 @@
-const { User } = require('../models/user'); // Adjust the path to your User model if it's different
+const { User } = require('../models/user');
 
-export default async function resetGenerations(request, response) {
-    try{
-        await User.updateMany({}, { $set: { generations: 5 } });
-    }catch(error){
-        console.error(error)
-        res.status(500).send('Error resetting generations');
-    }
-    res.status(200).send('Generations reset to 5 for all users');
-
+async function resetGenerations(request, response) {
+  try {
+    await User.updateMany({}, { $set: { generations: 5 } });
+    response.status(200).send('Generations reset to 5 for all users');
+  } catch (error) {
+    console.error(error);
+    response.status(500).send('Error resetting generations');
   }
+}
+
+module.exports = resetGenerations;
