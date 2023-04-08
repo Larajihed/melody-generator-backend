@@ -6,7 +6,7 @@ require('dotenv').config();
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const Melody = require('./models/melody');
-require('./utils/resetGenerations');
+require('./api/resetGenerations');
 
 
 const app = express();
