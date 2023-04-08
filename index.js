@@ -10,8 +10,8 @@ const Melody = require('./models/melody');
 
 
 const app = express();
-//app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
-app.use(cors({credentials: true, origin: 'https://app.melodymuse.ai'}));
+app.use(cors({credentials: true, origin: ['http://localhost:3000', 'https://app.melodymuse.ai']}));
+
 const port = process.env.PORT || 4033;
 
 const authenticationRouter = require('./routes/AuthenticationController');
