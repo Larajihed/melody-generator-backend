@@ -2,7 +2,7 @@ const { User } = require('../models/user'); // Adjust the path to your User mode
 
 export default async function handler(request, response) {
     try{
-        await User.updateMany({ generations: { $lt: 5 } }, { $set: { generations: 5 } });
+        await User.updateMany({}, { $set: { generations: 5 } });
     }catch(error){
         console.error(error)
         res.status(500).send('Error resetting generations');
