@@ -14,7 +14,7 @@
   ],
   "crons": [
     {
-      "path": "/api/resetGenerations.js",
+      "path": "/api/resetGenerations",
       "schedule": "0 0 * * *"
     }
   ]
