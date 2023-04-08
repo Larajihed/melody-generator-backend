@@ -6,13 +6,12 @@ require('dotenv').config();
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const Melody = require('./models/melody');
-const resetGeneration = require('./api/resetGenerations');
+ require('./api/resetGenerations');
 
 
 const app = express();
 //app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 app.use(cors({credentials: true, origin: 'https://app.melodymuse.ai'}));
-resetGeneration();
 const port = process.env.PORT || 4033;
 
 const authenticationRouter = require('./routes/AuthenticationController');
