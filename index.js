@@ -22,9 +22,9 @@ const verifyToken = require('./middleware/AuthenticateToken');
 
 app.use(cookieParser());
 app.use(express.json());
-app.use('/authentication', authenticationRouter);
-app.use('/payment', paymentRouter);
-app.use('/melodies', verifyToken, melodyRouter);
+app.use('/api/v1/authentication', authenticationRouter);
+app.use('/api/v1/payment', verifyToken, paymentRouter);
+app.use('/api/v1/melodies', verifyToken, melodyRouter);
 
 
 app.listen(port, () => {
@@ -45,7 +45,7 @@ mongoose.connect(process.env.MONGODB_URI, {
     res.send('Hello World!');
   });
   
-  app.get('/resetGenerations', async (req, res) => {
+  app.get('/api/v1/resetGenerations', async (req, res) => {
     try {
       await User.updateMany({ generations: { $lt: 5 } }, { $set: { generations: 5 } });
       res.status(200).send('Generations reset to 5 for all users');
@@ -57,7 +57,7 @@ mongoose.connect(process.env.MONGODB_URI, {
   
 
   
-app.get('/share/:shareId', async (req, res) => {
+app.get('/api/v1/share/:shareId', async (req, res) => {
 
   try {
     const melody = await Melody.findOne({ shareId: req.params.shareId });

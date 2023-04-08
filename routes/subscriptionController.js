@@ -1,4 +1,4 @@
-const stripe = require("stripe")("sk_test_51CkpKnAShxTdv5i7NOFC5GsMZWzXrjxGWClX0J6cOu9gfMRrISHDLK7GvlXrDIoVpJzUJNaRIVO9vbwjamhNKeQm00IsXRK1L5")
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
 const router = require('express').Router();
 const {User, Payment} = require('../models/user'); // Import the User model here
 const verifyToken = require('../middleware/AuthenticateToken');
@@ -25,13 +25,10 @@ async function createSubscription(createSubscriptionRequest) {
       },
     });
 
-    // get the price id from the front-end
-    const priceId = createSubscriptionRequest.body.premiumPriceId;
-
     // create a stripe subscription
     const subscription = await stripe.subscriptions.create({
       customer: customer.id,
-      items: [{ price: priceId }],
+      items: [{ price: process.env.PREMIUM_PRICE_ID }],
       payment_settings: {
         payment_method_types: ["card"],
         save_default_payment_method: "on_subscription",
@@ -48,7 +45,7 @@ async function createSubscription(createSubscriptionRequest) {
 
     // create a payment object and save it to the database
     const payment = new Payment({
-      amount: 9.99, // change this to the actual amount paid
+      amount: 9.99, 
       date: new Date(),
       subscriptionId: subscription.id,
       currency: subscription.currency,
@@ -60,6 +57,7 @@ async function createSubscription(createSubscriptionRequest) {
       customerEmail: subscription.latest_invoice.customer_email,
       hosted_invoice_url: subscription.latest_invoice.hosted_invoice_url,
     });
+
     await payment.save();
 
     // update the user's premium status and previous payments array
