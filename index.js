@@ -45,6 +45,16 @@ mongoose.connect(process.env.MONGODB_URI, {
     res.send('Hello World!');
   });
   
+  app.get('/api/resetGenerations', async (req, res) => {
+    try {
+      await User.updateMany({}, { $set: { generations: 5 } });
+      response.status(200).send('Generations reset to 5 for all users');
+    } catch (error) {
+      console.error(error);
+      response.status(500).send('Error resetting generations');
+    }
+  });
+  
 
   
 app.get('/share/:shareId', async (req, res) => {
