@@ -58,7 +58,7 @@ Notes for Bar 4:`;
   
   const body = {
   prompt,
-  max_tokens: 1000,
+  max_tokens: 300,
   n: 1,
   temperature: 0.7,
   };
