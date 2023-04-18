@@ -3,6 +3,7 @@ const router = require('express').Router();
 const {User, Payment} = require('../models/user'); 
 
 router.post('/subscribe', async (req, res) => {
+console.log("/sub", req.body)
   try {
     await createSubscription(req);
     res.status(200).send('Subscription successful');

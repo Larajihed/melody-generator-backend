@@ -167,6 +167,9 @@ router.post('/forgot-password', async (req, res) => {
       return res.status(500).json({ message: 'Internal server error' });
     }
   });
+
+
+  
 router.post('/change-password', verifyToken, async (req, res) => {
     try {
         console.log(req.body)

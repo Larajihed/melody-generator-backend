@@ -5,7 +5,7 @@ const paymentSchema = new mongoose.Schema({
   subscriptionId: { type: String, required: true },
   currency: { type: String, required: true },
   customer: { type: String, required: true },
-  defaultPaymentMethod: { type: String, required: true },
+  defaultPaymentMethod: { type: String, required: false },
   latest_invoice: { type: String, required: true },
   accountCountry: { type: String, required: false },
   customerName: { type: String, required: true },
