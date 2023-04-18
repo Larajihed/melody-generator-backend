@@ -3,7 +3,7 @@ const router = require('express').Router();
 const {User, Payment} = require('../models/user'); 
 
 router.post('/subscribe', async (req, res) => {
-console.log("/sub", req.body)
+
   try {
     await createSubscription(req);
     res.status(200).send('Subscription successful');
@@ -27,7 +27,7 @@ async function createSubscription(createSubscriptionRequest) {
     // create a stripe subscription
     const subscription = await stripe.subscriptions.create({
       customer: customer.id,
-      items: [{ price: process.env.PREMIUM_PRICE_ID }],
+      items: [{ price: "price_1MuIBJEfB3VIPNaNYv3xf4Nk" }],
       payment_settings: {
         payment_method_types: ["card"],
         save_default_payment_method: "on_subscription",
