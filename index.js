@@ -17,6 +17,8 @@ const port = process.env.PORT || 4033;
 const authenticationRouter = require('./routes/AuthenticationController');
 const paymentRouter = require('./routes/subscriptionController');
 const melodyRouter = require('./routes/melodyController');
+const freeGeneratorRouter = require('./routes/freeGeneratorController');
+
 const verifyToken = require('./middleware/AuthenticateToken');
 
 
@@ -25,6 +27,7 @@ app.use(express.json());
 app.use('/api/v1/authentication', authenticationRouter);
 app.use('/api/v1/payment', verifyToken, paymentRouter);
 app.use('/api/v1/melodies', verifyToken, melodyRouter);
+app.use('/api/v1/freegenerator', freeGeneratorRouter);
 
 
 app.listen(port, () => {
