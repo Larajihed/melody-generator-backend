@@ -38,10 +38,11 @@ router.post('/new', limiter, async (req, res) => {
   // Remaining common sections
   prompt += `\nKey:\nChord progression:\nChords:\nNotes for Chord 1:\nNotes for Chord 2:\nNotes for Chord 3:\nNotes for Chord 4:`;
 
-  const headers = new Headers({
-  'Content-Type': 'application/json',
-  'Authorization':  `Bearer ${process.env.OPENAI_API_KEY}`
-  });
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization':  `Bearer ${process.env.OPENAI_API_KEY}`
+  };
+  
   
   const body = {
     prompt,
