@@ -12,6 +12,7 @@ require('dotenv').config();
 const url = 'https://api.openai.com/v1/engines/text-davinci-003/completions';
 
 router.post('/new', verifyToken, async (req, res) => {
+  const { artist,genre, emotion, tempo, additionalInfo} = req.body;
   // Verify if the user has enough generations before making a request to the API
   const user = await User.findById(req.user.id);
   const isPremium = user.premium;
@@ -26,46 +27,30 @@ router.post('/new', verifyToken, async (req, res) => {
       }
     }
   }
+  let prompt = `Please generate a unique chord progression using the following specifications. Limit expendable prose:\n\n`;
   
-  const prompt = req.body.emotion ?
-  `Write a unique ${req.body.emotion} melody outline for a beat inspired by ${req.body.artist} for me with the following specifications. Limit expendable prose:
-Key:
-Tempo:
-Chord progression - (Instrument)
-Chords:
-Notes for Chord 1:
-Notes for Chord 2:
-Notes for Chord 3:
-Notes for Chord 4:
-Lead melody - (Instrument)
-Notes for Bar 1:
-Notes for Bar 2:
-Notes for Bar 3:
-Notes for Bar 4:
-Counter melody - (Instrument)
-Notes for Bar 1:
-Notes for Bar 2:
-Notes for Bar 3:
-Notes for Bar 4:` :
-  `Write a unique melody outline for a beat inspired by ${req.body.artist} for me with the following specifications. Limit expendable prose:
-Key:
-Tempo:
-Chord progression - (Instrument)
-Chords:
-Notes for Chord 1:
-Notes for Chord 2:
-Notes for Chord 3:
-Notes for Chord 4:
-Lead melody - (Instrument)
-Notes for Bar 1:
-Notes for Bar 2:
-Notes for Bar 3:
-Notes for Bar 4:
-Counter melody - (Instrument)
-Notes for Bar 1:
-Notes for Bar 2:
-Notes for Bar 3:
-Notes for Bar 4:`;
+  // Emotion section
+  if (artist) {
+    prompt += `Artist Name: ${artist}\n`;
+  }
+  // Genre section
+  if (genre) {
+    prompt += `Genre: ${genre}\n`;
+  }
+  // Emotion section
+  if (emotion) {
+    prompt += `Emotion: ${emotion}\n`;
+  }
+
+  // Artist section
+  if (tempo) {
+    prompt += `Tempo: ${tempo}\n`;
+  }
+
+  // Genre section
+  if (additionalInfo) {
+    prompt += `Additional Info: ${additionalInfo}\n`;
+  }
 
   const headers = new Headers({
   'Content-Type': 'application/json',
@@ -98,8 +83,11 @@ Notes for Bar 4:`;
   // Save the generated melody to the database
   const melody = new Melody({
     text: generatedMelody,
-    emotion: req.body.emotion,
-    artistName: req.body.artist,
+    artistName: artist,
+    genre: genre,
+    emotion: emotion,
+    tempo: tempo,
+    additionalInfo:additionalInfo,
     generatedAt: Date.now(),
     userId: req.user.id, 
     shareId:shortid.generate(),
