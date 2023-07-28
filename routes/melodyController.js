@@ -52,6 +52,10 @@ router.post('/new', verifyToken, async (req, res) => {
     prompt += `Additional Info: ${additionalInfo}\n`;
   }
 
+  
+  // Remaining common sections
+  prompt += `\nKey:\nChord progression:\nChords:\nNotes for Chord 1:\nNotes for Chord 2:\nNotes for Chord 3:\nNotes for Chord 4:`;
+
   const headers = new Headers({
   'Content-Type': 'application/json',
   'Authorization':  `Bearer ${process.env.OPENAI_API_KEY}`
