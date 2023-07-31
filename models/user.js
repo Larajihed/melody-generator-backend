@@ -21,7 +21,8 @@ const userSchema = new mongoose.Schema({
   premium: { type: Boolean, default: false },
   previousPayments: { type: [String], default: [] },
   admin: { type: Boolean, default: false },
-  subscriptionExpiration: { type: Date, default: null }
+  subscriptionExpiration: { type: Date, default: null },
+  melodyCount: { type: Number, default: 0 }
 
 
 });

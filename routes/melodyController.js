@@ -16,9 +16,7 @@ router.post('/new', verifyToken, async (req, res) => {
   // Verify if the user has enough generations before making a request to the API
   const user = await User.findById(req.user.id);
   const isPremium = user.premium;
-
   if (user) {
-
     if (!isPremium && user.generations <= 0) {
       if (user.subscriptionExpiration && user.subscriptionExpiration > Date.now()) {
         user.generations = -1;
@@ -27,6 +25,13 @@ router.post('/new', verifyToken, async (req, res) => {
       }
     }
   }
+  
+  // Increment user's melody count
+  user.melodyCount = (user.melodyCount || 0) + 1;
+  await user.save();
+
+  const melodyName = `#${user.melodyCount}`;  // generate unique name
+
   let prompt = `Please generate a unique chord progression using the following specifications. Limit expendable prose:\n\n`;
   
   // Emotion section
@@ -83,7 +88,6 @@ router.post('/new', verifyToken, async (req, res) => {
   const data = await response.json();
   const generatedMelody = data.choices[0].text.trim();
   
-  
   // Save the generated melody to the database
   const melody = new Melody({
     text: generatedMelody,
@@ -95,8 +99,9 @@ router.post('/new', verifyToken, async (req, res) => {
     generatedAt: Date.now(),
     userId: req.user.id, 
     shareId:shortid.generate(),
+    name: melodyName
+
   });
-  
   res.status(201).send(melody);
   
   if (user && (isPremium || user.generations > 0)) {
@@ -116,23 +121,36 @@ router.post('/new', verifyToken, async (req, res) => {
     
 // GET all melodies for the current user
 router.get('/getall', async (req, res) => {
-  
   try {
-    
-    const melodies = await Melody.find({ userId: req.user.id });
-    const melodiesWithShareLink = melodies.map((melody) => {
-      const shareLink = `${req.protocol}://${req.get('host')}/melodies/${melody.shareId}`;
-      return {
-        ...melody.toObject(),
-        shareLink
-      };
-    });
-    res.send(melodiesWithShareLink);
-    
+      const page = Number(req.query.page) || 1;  // default to page 1 if not provided
+      const limit = 10;  // fixed limit of 10 melodies per page
+      const skip = (page - 1) * limit;
+      
+      // Get the total number of melodies for the user.
+      const totalCount = await Melody.countDocuments({ userId: req.user.id });
+
+      // Fetch the melodies in descending order based on creation date.
+      const melodies = await Melody.find({ userId: req.user.id })
+                                   .sort({ 'dateGenerated': -1 })
+                                   .skip(skip)
+                                   .limit(limit);
+
+      const melodiesWithShareLink = melodies.map((melody) => {
+          const shareLink = `${req.protocol}://${req.get('host')}/melodies/${melody.shareId}`;
+          return {
+              ...melody.toObject(),
+              shareLink
+          };
+      });
+
+      // Return both the melodies and the total count.
+      res.json({ melodies: melodiesWithShareLink, totalCount });
+
   } catch (err) {
-    console.error(err);
-    res.status(500).send();
+      console.error(err);
+      res.status(500).send();
   }
 });
+
 
 module.exports = router;
