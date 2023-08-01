@@ -7,7 +7,7 @@ const url = 'https://api.openai.com/v1/engines/text-davinci-003/completions';
 
 const limiter = rateLimit({
   windowMs: 24 * 60 * 60 * 1000, // 24 hours
-  max: 20, // 20 requests
+  max: 5, // 20 requests
   message: {
       error: 'Too many requests from this IP. Please try again after 24 hours.',
       details: 'You have reached the maximum limit of 20 generations per 24 hours. To enjoy more features and higher limits, create an account with us.',
