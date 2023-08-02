@@ -10,7 +10,7 @@ const limiter = rateLimit({
   max: 5, // 20 requests
   message: {
       error: 'Too many requests from this IP. Please try again after 24 hours.',
-      details: 'You have reached the maximum limit of 20 generations per 24 hours. To enjoy more features and higher limits, create an account with us.',
+      details: 'You have reached the maximum limit of 5 generations per 24 hours. To enjoy more features and higher limits, create an account with us.',
   },
   headers: true,
 });
