@@ -19,6 +19,7 @@ const paymentRouter = require('./routes/subscriptionController');
 const melodyRouter = require('./routes/melodyController');
 const freeGeneratorRouter = require('./routes/freeGeneratorController');
 const packageRouter = require('./routes/packageController');
+const expirationController = require('./routes/expirationController');
 
 const verifyToken = require('./middleware/AuthenticateToken');
 
@@ -30,6 +31,7 @@ app.use('/api/v1/payment', verifyToken, paymentRouter);
 app.use('/api/v1/melodies', verifyToken, melodyRouter);
 app.use('/api/v1/freegenerator', freeGeneratorRouter);
 app.use('/api/v1/package', packageRouter);
+app.use('/api/v1/subscription', expirationController);
 
 
 app.listen(port, () => {

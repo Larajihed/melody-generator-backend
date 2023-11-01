@@ -16,6 +16,10 @@
     {
       "path": "/api/v1/resetGenerations",
       "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/v1/subscription/handle-expirations",
+      "schedule": "0 0 * * *"
     }
   ]
 }
