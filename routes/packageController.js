@@ -64,8 +64,58 @@ router.post('/create-checkout-session', async (req, res) => {
                 from: process.env.SMTP_USERNAME,
                 to: email,
                 subject: 'Your Files from Our Website',
-                text: `Hello again! We've noticed that you already have an account with us. Here are the files you've purchased. If you've forgotten your password, you can reset it using the following link: https://app.melodymuse.ai/forgot-password`,
-                attachments: [
+                html: `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            margin: 20px;
+                            color: #333;
+                            line-height: 1.5;
+                        }
+                        .container {
+                            border-radius: 8px;
+                            padding: 20px;
+                            max-width: 600px;
+                            margin: 0 auto;
+                            background-color: #f7f7f7;
+                            border: 1px solid #ddd;
+                        }
+                        .header {
+                            text-align: center;
+                            margin-bottom: 20px;
+                        }
+                        .button {
+                            display: inline-block;
+                            padding: 10px 20px;
+                            border-radius: 5px;
+                            text-decoration: none;
+                            background-color: #4CAF50;
+                            color: #fff;
+                            font-weight: bold;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="header">
+                            <img src="https://www.melodymuse.ai/full-logo.svg" alt="MelodyMuse Logo" width="150" />
+                            <h2>Welcome Back to MelodyMuse!</h2>
+                        </div>
+                        <pWe've noticed that you already have an account with us. Thank you for choosing us again!</p>
+                        <p>Below are the files you've purchased:</p>
+                        <!-- You can format the file links attractively here. -->
+                        <p>If you've forgotten your password, no worries! Just click the button below to reset it:</p>
+                        <a href="https://app.melodymuse.ai/forgot-password" class="button">Reset Password</a>
+                        <p>Thank you for being a part of our community. If you have any questions or need assistance, please don't hesitate to reach out.</p>
+                        <p>Warm regards,<br>MelodyMuse Team</p>
+                    </div>
+                </body>
+                </html>
+                `,
+                                attachments: [
                     {
                         path: path.join(__dirname, '..', 'files', 'Most Streamed Chord Progressions.zip'),
                         filename: 'Most Streamed Chord Progressions.zip'
