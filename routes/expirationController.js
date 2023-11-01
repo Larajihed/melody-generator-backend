@@ -3,7 +3,7 @@ const { User } = require('../models/user'); // Import the User model
 
 const router = express.Router();
 
-router.post('/handle-expirations', async (req, res) => {
+router.get('/handle-expirations', async (req, res) => {
     try {
 
         console.log("handle expireation ")
