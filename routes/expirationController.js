@@ -6,10 +6,10 @@ const router = express.Router();
 router.get('/handle-expirations', async (req, res) => {
     try {
 
-        console.log("handle expireation ")
         // Fetch all users where the subscriptionExpiration is less than the current date
         const expiredUsers = await User.find({ 
             premium: true, 
+            generations:5,
             subscriptionExpiration: { $lt: new Date() } 
         });
 
