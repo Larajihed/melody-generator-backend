@@ -72,7 +72,7 @@ router.post('/create-checkout-session', async (req, res) => {
                         body {
                             font-family: Arial, sans-serif;
                             margin: 20px;
-                            color: #333;
+                            color: #ffffff;
                             line-height: 1.5;
                         }
                         .container {
@@ -80,7 +80,7 @@ router.post('/create-checkout-session', async (req, res) => {
                             padding: 20px;
                             max-width: 600px;
                             margin: 0 auto;
-                            background-color: #f7f7f7;
+                            background-color: #030014;
                             border: 1px solid #ddd;
                         }
                         .header {
@@ -92,10 +92,12 @@ router.post('/create-checkout-session', async (req, res) => {
                             padding: 10px 20px;
                             border-radius: 5px;
                             text-decoration: none;
-                            background-color: #4CAF50;
-                            color: #fff;
+                            background: linear-gradient(92deg, #6366F1 0%, #42EEE4 100%);
+                            color: #000000;
                             font-weight: bold;
                         }
+
+
                     </style>
                 </head>
                 <body>
@@ -104,10 +106,10 @@ router.post('/create-checkout-session', async (req, res) => {
                             <img src="https://www.melodymuse.ai/full-logo.svg" alt="MelodyMuse Logo" width="150" />
                             <h2>Welcome Back to MelodyMuse!</h2>
                         </div>
-                        <pWe've noticed that you already have an account with us. Thank you for choosing us again!</p>
-                        <p>Below are the files you've purchased:</p>
+                        <p>We've noticed that you already have an account with us. <br> <b>Thank you for choosing us again! </b></p>
+                        <p>⬇️ Below are the files you've purchased</p>
                         <!-- You can format the file links attractively here. -->
-                        <p>If you've forgotten your password, no worries! Just click the button below to reset it:</p>
+                        <p>❓If you've forgotten your password, no worries! Just click the button below to reset it:</p>
                         <a href="https://app.melodymuse.ai/forgot-password" class="button">Reset Password</a>
                         <p>Thank you for being a part of our community. If you have any questions or need assistance, please don't hesitate to reach out.</p>
                         <p>Warm regards,<br>MelodyMuse Team</p>
@@ -201,7 +203,69 @@ async function sendEmailWithPackage(credentials) {
         from: process.env.SMTP_USERNAME,
         to: credentials.email,
         subject: 'Your Package from Our Website',
-        text: `Thank you for your purchase! Here are your credentials:\n${credentials.email}\n${credentials.password}`,
+        html:`
+        <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            margin: 20px;
+                            color: #ffffff;
+                            line-height: 1.5;
+                        }
+                        .container {
+                            border-radius: 8px;
+                            padding: 20px;
+                            max-width: 600px;
+                            margin: 0 auto;
+                            background-color: #030014;
+                            border: 1px solid #ddd;
+                        }
+                        .header {
+                            text-align: center;
+                            margin-bottom: 20px;
+                        }
+                        .button {
+                            display: inline-block;
+                            padding: 10px 20px;
+                            border-radius: 5px;
+                            text-decoration: none;
+                            background: linear-gradient(92deg, #6366F1 0%, #42EEE4 100%);
+                            color: #000000;
+                            font-weight: bold;
+                        }
+
+
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="header">
+                            <img src="https://www.melodymuse.ai/full-logo.svg" alt="MelodyMuse Logo" width="150" />
+                            <h2>Welcome to MelodyMuse!</h2>
+                        </div>
+                        <p><strong>Thank you for your purchase!</strong></p>
+                        <p>We're thrilled to have you on board. Along with the pack you've acquired, you also get <b>free 1 Month access</b> to our tool for generating chords.</p>
+                    
+                        <div style="background-color: #02000f; padding: 15px; margin: 20px 0; border-radius: 8px;">
+                            <h3>Your Credentials</h3>
+                            <p><b>Email:</b> ${credentials.email}</p>
+                            <p><b>Password:</b> ${credentials.password}</p>
+                            <a href="https://app.melodymuse.ai/login" class="button">Login Now</a>
+                        </div>
+                        
+                        <p>📥 Below are the files you've purchased:</p>
+                        <!-- You can add links to the files or list them out here -->
+                    
+                        <p>If you have any questions or need assistance, please don't hesitate to reach out. We're here to help!</p>
+                        
+                        <p>Warm regards,<br>MelodyMuse Team</p>
+                    </div>
+                    
+                </body>
+                </html>
+        `,
         attachments: [
             {
                 path: path.join(__dirname, '..', 'files', 'Most Streamed Chord Progressions.zip'),
