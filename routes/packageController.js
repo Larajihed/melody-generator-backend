@@ -1,10 +1,12 @@
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
 const router = require('express').Router();
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const {User} = require('../models/user'); // import the User model you defined earlier
 const bcrypt = require('bcrypt');
 const path = require('path');
+const Mailchimp = require('mailchimp-api-v3');
+const mailchimp = new Mailchimp(process.env.MAILCHIMP_API_KEY);
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
 
 router.post('/create-checkout-session', async (req, res) => {
     try {
@@ -129,7 +131,7 @@ router.post('/create-checkout-session', async (req, res) => {
                 ]
             };
 
-
+            addToMailchimp(email)
     await transporter.sendMail(mailOptions);
 
         } else {
@@ -161,7 +163,9 @@ router.post('/create-checkout-session', async (req, res) => {
     
             // Send email
             await sendEmailWithPackage(credentials);
+            
             res.send('Email sent successfully.');
+            await addToMailchimp(email);
 
         }
 
@@ -282,6 +286,16 @@ async function sendEmailWithPackage(credentials) {
     await transporter.sendMail(mailOptions);
 }
 
-
+async function addToMailchimp(email) {
+  try {
+      await mailchimp.post(`/lists/${process.env.MAILCHIMP_LIST_ID}/members`, {
+          email_address: email,
+          status: "subscribed", // "subscribed" means they are added to the list
+      });
+      console.log(`Added ${email} to Mailchimp list.`);
+  } catch (error) {
+      console.error(`Error adding ${email} to Mailchimp:`, error);
+  }
+}
 
   module.exports = router;
