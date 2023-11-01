@@ -9,13 +9,13 @@ router.get('/handle-expirations', async (req, res) => {
         // Fetch all users where the subscriptionExpiration is less than the current date
         const expiredUsers = await User.find({ 
             premium: true, 
-            generations:5,
             subscriptionExpiration: { $lt: new Date() } 
         });
 
         // Loop through the users and update their premium status
         for (let user of expiredUsers) {
             user.premium = false;
+            user.generations=5
             await user.save();
         }
 
