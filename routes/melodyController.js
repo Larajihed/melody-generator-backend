@@ -42,6 +42,7 @@ router.post('/new', verifyToken, async (req, res) => {
   if (genre) {
     prompt += `Genre: ${genre}\n`;
   }
+
   // Emotion section
   if (emotion) {
     prompt += `Emotion: ${emotion}\n`;
@@ -85,6 +86,7 @@ router.post('/new', verifyToken, async (req, res) => {
     console.error('Error generating melody', response.status, await response.text());
     return res.status(500).send('Error generating melody');
   }
+  
   const data = await response.json();
   const generatedMelody = data.choices[0].text.trim();
   
