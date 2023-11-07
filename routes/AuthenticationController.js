@@ -5,6 +5,9 @@ const {User, Payment} = require('../models/user'); // import the User model you 
 const verifyToken = require('../middleware/AuthenticateToken');
 const nodemailer= require('nodemailer')
 const router = express.Router();
+
+
+
 router.post('/register', async (req, res) => {
 
     // Check if user with email already exists
@@ -33,8 +36,9 @@ router.post('/register', async (req, res) => {
 });
 
   router.post('/login', async (req, res) => {
-    const user = await User.findOne({email: req.body.userEmail})
 
+    const user = await User.findOne({email: req.body.userEmail})
+    console.log(user)
     if (!user) {
         return res.status(404).send({
             message: 'user not found'
@@ -42,6 +46,7 @@ router.post('/register', async (req, res) => {
     }
 
     if (!await bcrypt.compare(req.body.userPassword, user.password  )) {
+      console.log(bcrypt.compare(req.body.userPassword, user.password))
         return res.status(400).send({
             message: 'invalid credentials'
         })
