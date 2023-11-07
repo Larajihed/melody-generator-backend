@@ -20,7 +20,7 @@ router.post('/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(req.body.password, salt)
 
     const user = new User({
-      email: req.body.email,
+      email: req.body.email.toLowerCase(),
       password: hashedPassword,
       generations: 5,
       premium: false,
@@ -37,8 +37,7 @@ router.post('/register', async (req, res) => {
 
   router.post('/login', async (req, res) => {
 
-    const user = await User.findOne({email: req.body.userEmail})
-    console.log(user)
+    const user = await User.findOne({email: req.body.userEmail.toLowerCase()})
     if (!user) {
         return res.status(404).send({
             message: 'user not found'
@@ -46,7 +45,6 @@ router.post('/register', async (req, res) => {
     }
 
     if (!await bcrypt.compare(req.body.userPassword, user.password  )) {
-      console.log(bcrypt.compare(req.body.userPassword, user.password))
         return res.status(400).send({
             message: 'invalid credentials'
         })
