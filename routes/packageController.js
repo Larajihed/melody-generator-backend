@@ -92,8 +92,8 @@ router.post('/create-checkout-session', async (req, res) => {
                             padding: 10px 20px;
                             border-radius: 5px;
                             text-decoration: none;
-                            background: linear-gradient(92deg, #6366F1 0%, #42EEE4 100%);
-                            color: #000000;
+                            background: #6366F1;
+                            color: #ffffff;
                             font-weight: bold;
                         }
 
@@ -231,8 +231,8 @@ async function sendEmailWithPackage(credentials) {
                             padding: 10px 20px;
                             border-radius: 5px;
                             text-decoration: none;
-                            background: linear-gradient(92deg, #6366F1 0%, #42EEE4 100%);
-                            color: #000000;
+                            background: #6366F1;
+                            color: #ffffff;
                             font-weight: bold;
                         }
 
