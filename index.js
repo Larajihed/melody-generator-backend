@@ -27,7 +27,7 @@ const verifyToken = require('./middleware/AuthenticateToken');
 app.use(cookieParser());
 app.use(express.json());
 app.use('/api/v1/authentication', authenticationRouter);
-app.use('/api/v1/payment', verifyToken, paymentRouter);
+app.use('/api/v1/payment',  paymentRouter);
 app.use('/api/v1/melodies', verifyToken, melodyRouter);
 app.use('/api/v1/freegenerator', freeGeneratorRouter);
 app.use('/api/v1/package', packageRouter);

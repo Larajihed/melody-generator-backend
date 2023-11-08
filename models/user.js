@@ -22,7 +22,17 @@ const userSchema = new mongoose.Schema({
   previousPayments: { type: [String], default: [] },
   admin: { type: Boolean, default: false },
   subscriptionExpiration: { type: Date, default: null },
-  melodyCount: { type: Number, default: 0 }
+  melodyCount: { type: Number, default: 0 },
+  // Inside your User model definition
+subscriptionId: {
+  type: String,
+  default: null,
+},
+stripeCustomerId:{
+  type: String,
+  default: null,
+}
+
 
 
 });
