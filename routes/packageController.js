@@ -316,8 +316,9 @@ async function addToMailchimp(email) {
 // This route is used to handle the customer portal for all users
 router.post("/create-customer-portal-session", async (req, res) => {
   try {
-    const userId = req.body.user._id; // Replace with however you get the logged-in user's ID
 
+
+    const userId = req.body.user._id; // Replace with however you get the logged-in user's ID
     // Fetch the user from your database
     const user = await User.findById(userId);
 
@@ -328,7 +329,7 @@ router.post("/create-customer-portal-session", async (req, res) => {
     // Create a session for the customer portal
     const portalSession = await stripe.billingPortal.sessions.create({
       customer: user.stripeCustomerId,
-      return_url: `${process.env.CLIENT_URL}/subscription`, // Replace with the URL to which customers are redirected after managing their subscription
+      return_url: `${process.env.CLIENT_URL}/`, // Replace with the URL to which customers are redirected after managing their subscription
     });
 
     // Redirect the customer to the Stripe customer portal
