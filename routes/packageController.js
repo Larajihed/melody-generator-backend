@@ -29,6 +29,9 @@ router.post('/create-checkout-session', async (req, res) => {
 
 
 
+
+
+
   router.post('/send-email', async (req, res) => {
     try {
         const sessionId = req.body.sessionId;
@@ -170,10 +173,6 @@ router.post('/create-checkout-session', async (req, res) => {
         res.status(500).send('An error occurred while processing your request.');
     }
 });
-
-
-
-
 
 
 
