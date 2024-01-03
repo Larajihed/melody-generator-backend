@@ -257,7 +257,7 @@ async function sendEmailWithPackage(credentials) {
                             <h2>Welcome to MelodyMuse!</h2>
                         </div>
                         <p><strong>Thank you for your purchase!</strong></p>
-                        <p>We're thrilled to have you on board. Along with the pack you've acquired, you also get <b>free 1 Month access</b> to our tool for generating chords.</p>
+                        <p>We're thrilled to have you on board. Along with the pack you've acquired, you also get access to our tool for generating chords.</p>
                     
                         <div style="background-color: #02000f; padding: 15px; margin: 20px 0; border-radius: 8px;">
                             <h3>Your Credentials</h3>
@@ -295,6 +295,15 @@ async function sendEmailWithPackage(credentials) {
           "Original Chord Progressions.zip"
         ),
         filename: "Original Chord Progressions.zip",
+      },
+      {
+        path: path.join(
+          __dirname,
+          "..",
+          "files",
+          "Dark Chords Pack.zip"
+        ),
+        filename: "Dark Chords Pack.zip",
       },
     ],
   };
