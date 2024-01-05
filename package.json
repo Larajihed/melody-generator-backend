@@ -4,8 +4,21 @@
   "description": "backend for the melody generator project",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test",
-    "start": " node index.js"
+    "test": "nyc jest",
+    "start": " node index.js",
+    "reset-db": "node ./scripts/resetDevDatabase.js"
+  },
+  "nyc": {
+    "reporter": [
+      "text",
+      "html"
+    ],
+    "include": [
+      "./**/*.js"
+    ],
+    "exclude": [
+      "./**/*.test.js"
+    ]
   },
   "engines": {
     "node": "18.x"
@@ -28,5 +41,9 @@
     "shortid": "^2.2.16",
     "stripe": "^11.16.0",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nyc": "^15.1.0"
   }
 }

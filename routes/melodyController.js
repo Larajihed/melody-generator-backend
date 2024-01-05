@@ -9,7 +9,7 @@ const {User} = require('../models/user'); // import the User model you defined e
 
 require('dotenv').config();
 
-const url = 'https://api.openai.com/v1/engines/text-davinci-003/completions';
+const OPENAI_API_URL = process.env.OPENAI_API_URL;
 
 router.post('/new', verifyToken, async (req, res) => {
   const { artist,genre, emotion, tempo, additionalInfo} = req.body;
@@ -76,7 +76,7 @@ router.post('/new', verifyToken, async (req, res) => {
   
   try {
   // Send request to OpenAI API
-  const response = await fetch(url, {
+  const response = await fetch(OPENAI_API_URL, {
   method: 'POST',
   headers,
   body: JSON.stringify(body),
