@@ -5,7 +5,7 @@ require('dotenv').config();
 async function resetDatabase() {
     // Connect to the database
     await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-    console.log("first")
+    console.log("Testing")
     // Define the default state for users
     const defaultUserData = [
         // Add your default user data here
