@@ -25,7 +25,7 @@ const stripeWebhookController = require('./services/stripeWebhook');
 
 const verifyToken = require('./middleware/AuthenticateToken');
 
-app.use('/api/v1/stripe/webhook', express.raw({ type: 'application/json' }));
+app.use('/api/v1/stripe/webhook', express.raw({type: "*/*"}));
 
 app.use(cookieParser());
 app.use(express.json());
