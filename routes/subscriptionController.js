@@ -31,7 +31,7 @@ router.post('/upgrade', verifyToken, async (req, res) => {
       ],
       mode: 'subscription',
       success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.CLIENT_URL}/cancel`,
+      cancel_url: `${process.env.CLIENT_URL}/`,
     });
 
     // Redirect to Stripe Checkout
