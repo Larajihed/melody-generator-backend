@@ -7,6 +7,7 @@ const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const Melody = require('./models/melody');
  const { User } = require('./models/user');
+ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 
 const app = express();
@@ -20,9 +21,11 @@ const melodyRouter = require('./routes/melodyController');
 const freeGeneratorRouter = require('./routes/freeGeneratorController');
 const packageRouter = require('./routes/packageController');
 const expirationController = require('./routes/expirationController');
+const stripeWebhookController = require('./services/stripeWebhook');
 
 const verifyToken = require('./middleware/AuthenticateToken');
 
+app.use('/api/v1/stripe/webhook', express.raw({ type: 'application/json' }));
 
 app.use(cookieParser());
 app.use(express.json());
@@ -32,6 +35,9 @@ app.use('/api/v1/melodies', verifyToken, melodyRouter);
 app.use('/api/v1/freegenerator', freeGeneratorRouter);
 app.use('/api/v1/package', packageRouter);
 app.use('/api/v1/subscription', expirationController);
+app.use('/api/v1/stripe', stripeWebhookController);
+
+
 
 
 app.listen(port, () => {
@@ -78,8 +84,6 @@ app.get('/api/v1/share/:shareId', async (req, res) => {
   }
 });
 
-
- 
 
 
 
