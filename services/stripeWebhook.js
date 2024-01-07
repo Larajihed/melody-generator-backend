@@ -6,9 +6,7 @@ const {User} = require('../models/user');
 
 
 
-// This is your Stripe CLI webhook secret for testing your endpoint locally.
-const endpointSecret = "whsec_QTDIkEvBedD0BrF94BSU98UgDLnS8iJz";
-//const endpointSecret = "whsec_ee24baf932742eb080ac6715500096c2d82a8762ba8c3eccfd25c9c55da54c74";
+const endpointSecret = process.env.WEBHOOK_ENDPOINT_SECRET;
 
 
 app.post('/webhook', express.raw({type: 'application/json'}), async (request, response) => {
@@ -17,14 +15,9 @@ app.post('/webhook', express.raw({type: 'application/json'}), async (request, re
   let event;
 
   try {
-    console.log("Request Body " , request.body)
-    console.log("request.headers" , request.headers)
-    console.log("endpoint sec: " , endpointSecret )
     event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
-    console.log("event is: ", event)
   } catch (err) {
     response.status(400).send(`Webhook Error: ${err.message}`);
-    console.log(`Webhook Error: ${err.message}`);
     return;
   }
 
