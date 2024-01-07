@@ -7,8 +7,8 @@ const {User} = require('../models/user');
 
 
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
-const endpointSecret = "we_1OViDKEfB3VIPNaN6U6Ya78c";
-//const endpointSecret = "whsec_ee24baf932742eb080ac6715500096c2d82a8762ba8c3eccfd25c9c55da54c74";
+//const endpointSecret = "we_1OViDKEfB3VIPNaN6U6Ya78c";
+const endpointSecret = "whsec_ee24baf932742eb080ac6715500096c2d82a8762ba8c3eccfd25c9c55da54c74";
 
 
 app.post('/webhook', express.raw({type: 'application/json'}), async (request, response) => {
@@ -25,8 +25,6 @@ app.post('/webhook', express.raw({type: 'application/json'}), async (request, re
 
   // Handle the event
   switch (event.type) {
-    case 'customer.subscription.created':
-    case 'customer.subscription.updated':
     case 'customer.subscription.deleted':
       const subscription = event.data.object;
       await handleSubscriptionChange(subscription);
@@ -39,7 +37,6 @@ app.post('/webhook', express.raw({type: 'application/json'}), async (request, re
       const invoice = event.data.object;
       await handlePaymentFailure(invoice);
       break;
-    // ... handle other event types
     default:
       console.log(`Unhandled event type ${event.type}`);
   }
@@ -49,18 +46,16 @@ app.post('/webhook', express.raw({type: 'application/json'}), async (request, re
 
 async function handleSubscriptionChange(subscription) {
   try {
-    //const user = await User.findOne({ stripeCustomerId: subscription.customer });
     const user = await User.findOne({ stripeCustomerId: subscription.customer });
+    console.log("User is " +user )
     if (!user) {
-      console.log(`User not found for Stripe Customer ID: ${subscription.customer}`);
+      console.log(`User not found for Stripe Customer ID In handleSubscriptionChange: ${subscription.customer}`);
       return;
     }
 
     if (subscription.status === 'canceled' || subscription.status === 'deleted') {
       // Handle cancellation of the subscription
       user.premium = false;
-      user.subscriptionId = null;
-      user.subscriptionExpiration = null; // or set to the date of cancellation if preferred
       console.log("Subscription Canceled for " + user)
     } else {
       // Handle other subscription changes
@@ -80,7 +75,7 @@ async function handlePaymentSuccess(paymentIntent) {
   try {
     const user = await User.findOne({ stripeCustomerId: paymentIntent.customer });
     if (!user) {
-      console.log(`User not found for Stripe Customer ID: ${paymentIntent.customer}`);
+      console.log(`User not found for Stripe Customer ID In handlePaymentSuccess: ${paymentIntent.customer}`);
       return;
     }
 
@@ -99,7 +94,7 @@ async function handlePaymentFailure(invoice) {
   try {
     const user = await User.findOne({ stripeCustomerId: invoice.customer });
     if (!user) {
-      console.log(`User not found for Stripe Customer ID: ${invoice.customer}`);
+      console.log(`User not found for Stripe Customer ID in handlePaymentFailure: ${invoice.customer}`);
       return;
     }
 

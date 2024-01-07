@@ -25,10 +25,12 @@ const stripeWebhookController = require('./services/stripeWebhook');
 
 const verifyToken = require('./middleware/AuthenticateToken');
 
-app.use('/api/v1/stripe/webhook', express.raw({type: "*/*"}));
 
 app.use(cookieParser());
+app.use('/api/v1/stripe/webhook', express.raw({type: "*/*"}));
+
 app.use(express.json());
+
 app.use('/api/v1/authentication', authenticationRouter);
 app.use('/api/v1/payment',  paymentRouter);
 app.use('/api/v1/melodies', verifyToken, melodyRouter);
