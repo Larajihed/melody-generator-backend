@@ -7,7 +7,7 @@ const {User} = require('../models/user');
 
 
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
-const endpointSecret = "we_1OViDKEfB3VIPNaN6U6Ya78c";
+const endpointSecret = "whsec_QTDIkEvBedD0BrF94BSU98UgDLnS8iJz";
 //const endpointSecret = "whsec_ee24baf932742eb080ac6715500096c2d82a8762ba8c3eccfd25c9c55da54c74";
 
 
