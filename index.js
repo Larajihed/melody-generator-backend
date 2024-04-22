@@ -45,7 +45,7 @@ app.use('/api/v1/stripe', stripeWebhookController);
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
-
+/*
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -55,7 +55,7 @@ mongoose.connect(process.env.MONGODB_URI, {
     console.error(error);
   });
 
-
+*/
   app.get('/', (req, res) => {
     res.send('Hello World!');
   });

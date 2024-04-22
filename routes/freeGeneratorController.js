@@ -9,7 +9,7 @@ const { sendToOpenAI } = require('../services/openAiService');
 const { buildPrompt } = require('../services/promptBuilder');
 const { handleResponse, handleError } = require('../services/responseHandler');
 
-
+/*
 // Rate limiting setup
 const apiRateLimiter = rateLimit({
   windowMs: 24 * 60 * 60 * 1000, // 24 hours
@@ -21,7 +21,8 @@ const apiRateLimiter = rateLimit({
   headers: true,
 });
 
-router.post('/new', apiRateLimiter, async (req, res) => {
+  router.post('/new', apiRateLimiter, async (req, res) => {*/
+router.post('/new', async (req, res) => {
   try {
     const prompt = buildPrompt(req.body);
     const melody = await sendToOpenAI(prompt);

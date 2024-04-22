@@ -1,8 +1,6 @@
 function handleResponse(req, res, melody) {
     const rateLimitInfo = {
-      'X-RateLimit-Limit': req.rateLimit.limit,
-      'X-RateLimit-Remaining': req.rateLimit.remaining,
-      'X-RateLimit-Reset': req.rateLimit.resetTime,
+
       'Melody': melody
     };
   
