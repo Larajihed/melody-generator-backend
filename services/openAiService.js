@@ -20,9 +20,6 @@ async function sendToOpenAI(prompt) {
       headers,
       body: JSON.stringify(body),
     });
-
-
-
     const data = await response.json();
     return data.choices[0].text.trim();
   } catch (error) {
